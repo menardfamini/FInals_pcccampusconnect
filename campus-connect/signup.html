@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up — Campus Connect</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    .auth-wrapper {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      position: relative;
+      z-index: 1;
+    }
+    .auth-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      width: 100%;
+      max-width: 480px;
+      padding: 44px 40px;
+      animation: fadeUp .5s ease both;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .auth-logo {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.5rem; font-weight: 800;
+      color: var(--white);
+      text-align: center; margin-bottom: 6px;
+      text-decoration: none; display: block;
+    }
+    .auth-logo span { color: var(--accent); }
+    .auth-subtitle {
+      text-align: center; color: var(--muted);
+      font-size: .875rem; margin-bottom: 32px;
+    }
+    .auth-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.4rem; font-weight: 700;
+      color: var(--white); text-align: center; margin-bottom: 28px;
+    }
+    .form-group { margin-bottom: 18px; }
+    .form-group label {
+      display: block; font-size: .8rem; font-weight: 500;
+      color: var(--muted); text-transform: uppercase;
+      letter-spacing: .08em; margin-bottom: 7px;
+    }
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      background: rgba(255,255,255,.05);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 11px 14px;
+      color: var(--text);
+      font-size: .95rem;
+      font-family: 'DM Sans', sans-serif;
+      transition: border-color .25s, box-shadow .25s;
+      outline: none;
+    }
+    .form-group select { cursor: pointer; }
+    .form-group select option { background: var(--deep); color: var(--text); }
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(79,142,247,.15);
+    }
+    .form-group input::placeholder { color: var(--muted); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .btn-auth {
+      width: 100%; background: var(--accent); color: #fff;
+      border: none; border-radius: 8px; padding: 13px;
+      font-size: 1rem; font-weight: 600;
+      font-family: 'Syne', sans-serif; cursor: pointer;
+      margin-top: 8px; transition: opacity .2s, transform .2s;
+    }
+    .btn-auth:hover { opacity: .88; transform: translateY(-1px); }
+    .btn-auth:active { transform: translateY(0); }
+    .btn-auth:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+    .auth-switch {
+      text-align: center; margin-top: 22px;
+      font-size: .875rem; color: var(--muted);
+    }
+    .auth-switch a { color: var(--accent); text-decoration: none; font-weight: 500; }
+    .auth-switch a:hover { text-decoration: underline; }
+    .auth-msg {
+      border-radius: 8px; padding: 10px 14px;
+      font-size: .875rem; margin-bottom: 18px; display: none;
+    }
+    .auth-msg.error   { background: rgba(239,68,68,.12); border: 1px solid rgba(239,68,68,.35); color: #fca5a5; }
+    .auth-msg.success { background: rgba(34,197,94,.12); border: 1px solid rgba(34,197,94,.35); color: #86efac; }
+    .auth-divider {
+      display: flex; align-items: center; gap: 12px;
+      margin: 20px 0; color: var(--muted); font-size: .8rem;
+    }
+    .auth-divider::before, .auth-divider::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+    .role-pill-group {
+      display: flex; gap: 10px;
+    }
+    .role-pill {
+      flex: 1; border: 1px solid var(--border);
+      border-radius: 8px; padding: 10px 14px;
+      background: rgba(255,255,255,.04);
+      cursor: pointer; text-align: center;
+      font-size: .9rem; color: var(--muted);
+      transition: all .2s;
+    }
+    .role-pill:hover { border-color: var(--accent); color: var(--text); }
+    .role-pill.selected {
+      border-color: var(--accent);
+      background: rgba(79,142,247,.12);
+      color: var(--accent); font-weight: 600;
+    }
+    .role-pill input { display: none; }
+  </style>
+</head>
+<body>
+
+  <div class="auth-wrapper">
+    <div class="auth-card">
+
+      <a class="auth-logo" href="index.html">Campus<span>Connect</span></a>
+      <p class="auth-subtitle">pccnet — Create your student account</p>
+
+      <h2 class="auth-title">Create Account</h2>
+
+      <div class="auth-msg" id="auth-msg"></div>
+
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" placeholder="Juan Dela Cruz" />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" placeholder="you@example.com" autocomplete="email" />
+      </div>
+
+      <div class="form-group">
+        <label for="strand">Academic Strand / Program</label>
+        <select id="strand">
+          <option value="" disabled selected>Select your strand</option>
+          <option value="STEM">STEM — Science, Technology, Engineering & Math</option>
+          <option value="ABM">ABM — Accountancy, Business & Management</option>
+          <option value="HUMSS">HUMSS — Humanities & Social Sciences</option>
+          <option value="GAS">GAS — General Academic Strand</option>
+          <option value="TVL">TVL — Technical-Vocational-Livelihood</option>
+          <option value="BSIT">BS Information Technology</option>
+          <option value="BSA">BS Accountancy</option>
+          <option value="BSBA">BS Business Administration</option>
+          <option value="BSE">BS Education</option>
+          <option value="BSP">BS Psychology</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="Min. 6 characters" />
+        </div>
+        <div class="form-group">
+          <label for="password2">Confirm Password</label>
+          <input type="password" id="password2" placeholder="Repeat password" />
+        </div>
+      </div>
+
+      <button class="btn-auth" id="btn-signup">Create Account</button>
+
+      <div class="auth-divider">or</div>
+
+      <div class="auth-switch">
+        Already have an account? <a href="login.html">Log in here</a>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    function showMsg(text, type) {
+      const el = document.getElementById('auth-msg');
+      el.textContent = text;
+      el.className = 'auth-msg ' + type;
+      el.style.display = 'block';
+    }
+
+    document.getElementById('btn-signup').addEventListener('click', function () {
+      const name      = document.getElementById('name').value.trim();
+      const email     = document.getElementById('email').value.trim();
+      const strand    = document.getElementById('strand').value;
+      const password  = document.getElementById('password').value;
+      const password2 = document.getElementById('password2').value;
+
+      if (!name || !email || !strand || !password || !password2) {
+        showMsg('Please fill in all fields.', 'error'); return;
+      }
+      if (password.length < 6) {
+        showMsg('Password must be at least 6 characters.', 'error'); return;
+      }
+      if (password !== password2) {
+        showMsg('Passwords do not match.', 'error'); return;
+      }
+
+      const btn = this;
+      btn.disabled = true;
+      btn.textContent = 'Creating account…';
+
+      const fd = new FormData();
+      fd.append('name',      name);
+      fd.append('email',     email);
+      fd.append('strand',    strand);
+      fd.append('password',  password);
+      fd.append('password2', password2);
+
+      fetch('php/signup.php', { method: 'POST', body: fd })
+        .then(r => r.json())
+        .then(data => {
+          if (data.ok) {
+            showMsg(data.msg + ' Redirecting to login…', 'success');
+            setTimeout(() => window.location.href = 'login.html', 1500);
+          } else {
+            showMsg(data.msg, 'error');
+            btn.disabled = false;
+            btn.textContent = 'Create Account';
+          }
+        })
+        .catch(() => {
+          showMsg('Server error. Make sure XAMPP is running.', 'error');
+          btn.disabled = false;
+          btn.textContent = 'Create Account';
+        });
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Enter') document.getElementById('btn-signup').click();
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!-- ============================================================
+     MODULE 1 — Events Page
+     Included by: index.html as #page-events
+     ============================================================ -->
+<section id="page-events" class="page">
+  <div class="section-wrap">
+    <div class="section-header fade-in">
+      <h2>Upcoming Events</h2>
+      <p>Browse all upcoming academic and extracurricular activities.</p>
+    </div>
+    <div class="filter-tabs fade-in">
+      <button class="tab-btn active" data-filter="all">All Events</button>
+      <button class="tab-btn" data-filter="activity">Activities</button>
+      <button class="tab-btn" data-filter="academic">Academics</button>
+    </div>
+    <div class="events-grid" id="events-container">
+      <!-- Dynamically populated by js/app.js using CampusData.events -->
+    </div>
+  </div>
+</section>
