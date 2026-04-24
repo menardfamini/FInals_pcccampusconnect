@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Campus Connect — pccnet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════════
+       NAVBAR
+  ══════════════════════════════════════════════ -->
+  <nav id="main-nav">
+    <a class="nav-logo" href="index.html" data-page="home">
+      Campus<span>Connect</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html"     data-page="home"     class="active">Home</a></li>
+      <li><a href="module1-events.html"   data-page="events">Events</a></li>
+      <li><a href="module2-programs.html" data-page="programs">Programs</a></li>
+      <li><a href="module3-contacts.html" data-page="contacts">Contacts</a></li>
+    </ul>
+    <!-- Auth Button — injected by auth-nav.js -->
+    <div id="auth-nav-slot" style="display:flex;align-items:center;gap:10px;"></div>
+
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ══════════════════════════════════════════════
+       PAGE: HOME
+  ══════════════════════════════════════════════ -->
+  <section id="page-home" class="page active">
+
+    <div class="hero">
+      <div class="hero-tag fade-in">Welcome to Campus Connect</div>
+      <h1 class="fade-in">Stay <span>Connected</span><br/>With Your Campus</h1>
+      <p class="fade-in">
+        Stay updated on all school events, explore academic programs,
+        and connect with faculty members.
+      </p>
+      <div class="hero-btns fade-in">
+        <a href="module1-events.html"   class="btn btn-primary" data-page="events">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          Browse Events
+        </a>
+        <a href="module3-contacts.html" class="btn btn-outline" data-page="contacts">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/>
+          </svg>
+          Contact Faculty
+        </a>
+      </div>
+    </div>
+
+    <!-- Quick Cards -->
+    <div class="quick-cards">
+      <a href="module1-events.html"   class="qcard fade-in" data-page="events">
+        <div class="qcard-icon">📅</div>
+        <h3>Events</h3>
+        <p>Browse all upcoming academic and extracurricular activities.</p>
+      </a>
+      <a href="module3-contacts.html" class="qcard fade-in" data-page="contacts">
+        <div class="qcard-icon">📞</div>
+        <h3>Contacts</h3>
+        <p>Get in touch with program heads and faculty.</p>
+      </a>
+      <a href="module2-programs.html" class="qcard fade-in" data-page="programs">
+        <div class="qcard-icon">🎓</div>
+        <h3>Programs</h3>
+        <p>Explore our diverse range of academic programs.</p>
+      </a>
+    </div>
+
+    <!-- Upcoming Events Preview -->
+    <div class="section-wrap">
+      <div class="section-header fade-in">
+        <a href="module1-events.html" class="view-all" data-page="events">View All Events →</a>
+        <h2>Upcoming Events</h2>
+        <p>Don't miss out on the latest happenings on campus.</p>
+      </div>
+      <div class="events-grid" id="home-events-preview"></div>
+    </div>
+
+    <!-- Programs Preview -->
+    <div class="section-wrap">
+      <div class="section-header fade-in">
+        <a href="module2-programs.html" class="view-all" data-page="programs">View All Programs →</a>
+        <h2>Our Programs</h2>
+        <p>Discover the academic programs we offer.</p>
+      </div>
+      <div class="programs-grid" id="home-programs-preview"></div>
+    </div>
+
+  </section>
+
+  <!-- ══════════════════════════════════════════════
+       MODULE 1 — EVENTS
+  ══════════════════════════════════════════════ -->
+  <section id="page-events" class="page">
+    <div class="section-wrap">
+      <div class="section-header fade-in">
+        <h2>Upcoming Events</h2>
+        <p>Browse all upcoming academic and extracurricular activities.</p>
+      </div>
+      <div class="filter-tabs fade-in">
+        <button class="tab-btn active" data-filter="all">All Events</button>
+        <button class="tab-btn" data-filter="activity">Activities</button>
+        <button class="tab-btn" data-filter="academic">Academics</button>
+      </div>
+      <div class="events-grid" id="events-container"></div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════
+       MODULE 2 — PROGRAMS
+  ══════════════════════════════════════════════ -->
+  <section id="page-programs" class="page">
+    <div class="section-wrap">
+      <div class="section-header fade-in">
+        <h2>Program Offerings</h2>
+        <p>Explore our diverse range of academic programs.</p>
+      </div>
+      <div class="programs-grid" id="programs-container"></div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════
+       MODULE 3 — CONTACTS
+  ══════════════════════════════════════════════ -->
+  <section id="page-contacts" class="page">
+    <div class="section-wrap">
+      <div class="section-header fade-in">
+        <h2>Program Heads</h2>
+        <p>Get in touch with our program heads for inquiries and guidance.</p>
+      </div>
+      <div class="contacts-grid" id="contacts-container"></div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════
+       MODULE 4 — PROGRAM DETAIL
+  ══════════════════════════════════════════════ -->
+  <section id="page-program-detail" class="page">
+    <div class="section-wrap">
+
+      <button class="back-to-programs" id="back-to-programs">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path d="M19 12H5M5 12l7 7M5 12l7-7"/>
+        </svg>
+        Back to Programs
+      </button>
+
+      <div class="prog-detail-hero">
+        <div class="prog-detail-logo-wrap">
+          <img id="detail-logo" src="" alt="" class="prog-detail-logo"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+          <div class="prog-detail-logo-fallback" id="detail-logo-fallback"></div>
+        </div>
+        <div class="prog-detail-header">
+          <div class="prog-detail-abbr" id="detail-abbr"></div>
+          <h1 class="prog-detail-name" id="detail-name"></h1>
+          <div class="prog-detail-dept" id="detail-dept"></div>
+          <div class="prog-detail-meta-row">
+            <div class="prog-detail-meta-item">
+              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+              </svg>
+              <span id="detail-duration"></span>
+            </div>
+            <div class="prog-detail-meta-item">
+              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+              </svg>
+              <span id="detail-units"></span>
+            </div>
+            <div class="prog-detail-meta-item">
+              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/>
+              </svg>
+              <span id="detail-head"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="prog-detail-body">
+
+        <div class="prog-detail-card">
+          <h3 class="prog-detail-card-title">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            About this Program
+          </h3>
+          <p id="detail-description" class="prog-detail-desc"></p>
+        </div>
+
+        <div class="prog-detail-two-col">
+          <div class="prog-detail-card">
+            <h3 class="prog-detail-card-title">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <polyline points="9 11 12 14 22 4"/>
+                <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+              </svg>
+              Program Highlights
+            </h3>
+            <ul class="prog-detail-list" id="detail-highlights"></ul>
+          </div>
+
+          <div class="prog-detail-card">
+            <h3 class="prog-detail-card-title">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <rect x="2" y="7" width="20" height="14" rx="2"/>
+                <path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/>
+              </svg>
+              Career Opportunities
+            </h3>
+            <ul class="prog-detail-list careers" id="detail-careers"></ul>
+          </div>
+        </div>
+
+        <div class="prog-detail-contact-cta">
+          <p>Have questions about this program?</p>
+          <a href="module3-contacts.html" class="btn btn-primary" data-page="contacts">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/>
+            </svg>
+            Contact Program Head
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════════════ -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo">Campus<span>Connect</span></div>
+      <div class="footer-links">
+        <a href="index.html"     data-page="home">Home</a>
+        <a href="module1-events.html"   data-page="events">Events</a>
+        <a href="module2-programs.html" data-page="programs">Programs</a>
+        <a href="module3-contacts.html" data-page="contacts">Contacts</a>
+      </div>
+      <div class="footer-copy">&copy;2026 pccnet &nbsp;|&nbsp; All Rights Reserved</div>
+    </div>
+  </footer>
+
+  <!-- Auth Nav -->
+  <script src="js/auth-nav.js"></script>
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+          integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+          crossorigin="anonymous"></script>
+  <!-- Shared Storage Bridge -->
+  <script src="js/storage.js"></script>
+  <!-- Data (with embedded images) -->
+  <script src="js/data.js"></script>
+  <!-- App Logic -->
+  <script src="js/app.js"></script>
+
+</body>
+</html>

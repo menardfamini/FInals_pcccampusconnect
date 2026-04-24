@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Profile — Campus Connect</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    /* ── Reuse navbar from main site ───────────────────── */
+    .profile-wrapper {
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 60px 20px 80px;
+      position: relative;
+      z-index: 1;
+    }
+    .profile-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      width: 100%;
+      max-width: 520px;
+      padding: 44px 40px;
+      animation: fadeUp .5s ease both;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .profile-avatar {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      background: rgba(79,142,247,.18);
+      border: 2px solid var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 700;
+      color: var(--accent);
+      margin: 0 auto 20px;
+    }
+    .profile-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.5rem; font-weight: 700;
+      color: var(--white); text-align: center; margin-bottom: 6px;
+    }
+    .profile-email {
+      text-align: center; color: var(--muted); font-size: .9rem;
+      margin-bottom: 28px;
+    }
+    .profile-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 14px; border-radius: 50px;
+      font-size: .78rem; font-weight: 600; letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+    .badge-admin   { background: rgba(245,200,66,.14); border: 1px solid rgba(245,200,66,.35); color: var(--gold); }
+    .badge-student { background: rgba(79,142,247,.14); border: 1px solid rgba(79,142,247,.35); color: var(--accent); }
+    .badge-wrap { text-align: center; margin-bottom: 32px; }
+
+    .profile-divider {
+      height: 1px; background: var(--border); margin: 24px 0;
+    }
+    .profile-field {
+      margin-bottom: 18px;
+    }
+    .profile-field-label {
+      font-size: .75rem; font-weight: 500; color: var(--muted);
+      text-transform: uppercase; letter-spacing: .1em; margin-bottom: 5px;
+    }
+    .profile-field-value {
+      font-size: 1rem; color: var(--text); font-weight: 400;
+    }
+    .profile-actions {
+      display: flex; gap: 12px; margin-top: 32px;
+    }
+    .btn-profile {
+      flex: 1; padding: 11px; border-radius: 8px;
+      font-size: .9rem; font-weight: 600;
+      font-family: 'Syne', sans-serif; cursor: pointer;
+      transition: opacity .2s, transform .2s; border: none;
+      text-align: center; text-decoration: none; display: inline-block;
+    }
+    .btn-profile:hover { opacity: .85; transform: translateY(-1px); }
+    .btn-home    { background: var(--accent); color: #fff; }
+    .btn-logout  { background: rgba(239,68,68,.15); border: 1px solid rgba(239,68,68,.35); color: #fca5a5; }
+    .btn-admin   { background: rgba(245,200,66,.14); border: 1px solid rgba(245,200,66,.35); color: var(--gold); }
+    .loading-text { text-align: center; color: var(--muted); padding: 40px 0; }
+    .not-logged {
+      text-align: center; color: var(--muted); padding: 20px 0;
+    }
+    .not-logged a { color: var(--accent); text-decoration: none; font-weight: 500; }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR (same as main site) -->
+  <nav id="main-nav">
+    <a class="nav-logo" href="index.html">Campus<span>Connect</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="module1-events.html">Events</a></li>
+      <li><a href="module2-programs.html">Programs</a></li>
+      <li><a href="module3-contacts.html">Contacts</a></li>
+    </ul>
+  </nav>
+
+  <div class="profile-wrapper">
+    <div class="profile-card" id="profile-card">
+      <p class="loading-text">Loading profile…</p>
+    </div>
+  </div>
+
+  <script>
+    // ── Render helpers ────────────────────────────────────────
+    function initials(name) {
+      return name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+    }
+
+    function renderProfile(user) {
+      const isAdmin = user.role === 'admin';
+      const badgeClass = isAdmin ? 'badge-admin' : 'badge-student';
+      const badgeLabel = isAdmin ? '⭐ Admin' : '🎓 Student';
+      const joined = new Date(user.created_at).toLocaleDateString('en-PH', {
+        year: 'numeric', month: 'long', day: 'numeric'
+      });
+
+      const adminBtn = isAdmin
+        ? `<a class="btn-profile btn-admin" href="admin/index.html">Go to Admin Panel</a>`
+        : '';
+
+      document.getElementById('profile-card').innerHTML = `
+        <div class="profile-avatar">${initials(user.name)}</div>
+        <div class="profile-name">${user.name}</div>
+        <div class="profile-email">${user.email}</div>
+        <div class="badge-wrap">
+          <span class="profile-badge ${badgeClass}">${badgeLabel}</span>
+        </div>
+        <div class="profile-divider"></div>
+        <div class="profile-field">
+          <div class="profile-field-label">Full Name</div>
+          <div class="profile-field-value">${user.name}</div>
+        </div>
+        <div class="profile-field">
+          <div class="profile-field-label">Email Address</div>
+          <div class="profile-field-value">${user.email}</div>
+        </div>
+        <div class="profile-field">
+          <div class="profile-field-label">Strand / Program</div>
+          <div class="profile-field-value">${user.strand || '—'}</div>
+        </div>
+        <div class="profile-field">
+          <div class="profile-field-label">Account Type</div>
+          <div class="profile-field-value">${isAdmin ? 'Administrator' : 'Student'}</div>
+        </div>
+        <div class="profile-field">
+          <div class="profile-field-label">Member Since</div>
+          <div class="profile-field-value">${joined}</div>
+        </div>
+        <div class="profile-actions">
+          <a class="btn-profile btn-home" href="index.html">← Back to Home</a>
+          ${adminBtn}
+          <button class="btn-profile btn-logout" onclick="logout()">Log Out</button>
+        </div>
+      `;
+    }
+
+    function renderNotLogged() {
+      document.getElementById('profile-card').innerHTML = `
+        <div class="not-logged">
+          <p style="font-size:3rem;margin-bottom:16px">🔒</p>
+          <p style="color:var(--text);font-size:1.1rem;font-weight:600;margin-bottom:10px">
+            You are not logged in
+          </p>
+          <p>Please <a href="login.html">log in</a> to view your profile.</p>
+        </div>
+      `;
+    }
+
+    function logout() {
+      localStorage.removeItem('cc_user');
+      // Also hit PHP to clear server session
+      fetch('php/logout.php').finally(() => {
+        window.location.href = 'login.html';
+      });
+    }
+
+    // ── Boot ─────────────────────────────────────────────────
+    // First try local cache (fast display), then verify with server
+    const cached = localStorage.getItem('cc_user');
+    if (cached) {
+      try {
+        const u = JSON.parse(cached);
+        // Show basic cached data immediately
+        renderProfile({
+          name:       u.name,
+          email:      '(loading…)',
+          strand:     u.strand,
+          role:       u.role,
+          created_at: new Date().toISOString()
+        });
+      } catch(e) {}
+    }
+
+    // Fetch full profile from PHP / session
+    fetch('php/profile.php')
+      .then(r => r.json())
+      .then(data => {
+        if (data.ok) {
+          // Refresh cache
+          localStorage.setItem('cc_user', JSON.stringify({
+            name:   data.user.name,
+            role:   data.user.role,
+            strand: data.user.strand
+          }));
+          renderProfile(data.user);
+        } else {
+          if (!cached) renderNotLogged();
+        }
+      })
+      .catch(() => {
+        // XAMPP might not be running — show cached data or not-logged
+        if (!cached) renderNotLogged();
+      });
+  </script>
+
+</body>
+</html>
